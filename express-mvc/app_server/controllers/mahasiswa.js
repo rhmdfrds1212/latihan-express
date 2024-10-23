@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Mahasiswa = mongoose.model("Mahasiswa");
+const Mahasiwa = mongoose.model("Mahasiswa");
 
 //untuk menghandle request get all mahasiswa
 const index = (req, res, next) => {
@@ -109,3 +109,38 @@ const show = (req, res, next) => {
             res.status(404).json(responseMessage);
         });
 };
+
+
+//untuk menghandle request delete
+const destroy = (req, res, next) => {
+    Mahasiswa
+        .findByIdAndDelete(req.params.id)
+        .then((mhs) => {
+            const responseMessage = {
+                code: 200,
+                success: true,
+                message: "Successfull",
+            };
+            res.status(200).json(responseMessage);
+        });
+        /*.catch((e) => {
+            const responseMessage = {
+                code: 404,
+                success: false,
+                message: "ID " + req.params.id + " Not Found",
+                error: e
+            };
+            res.status(404).json(responseMessage);
+        });*/
+};
+
+module.exports = {
+    index, insert, update, show, destroy
+}
+
+const mhsController = require('../controllers/mahasiswa');
+router.get("/", mhsController.index); //list mahasiswa
+router.post("/insert", mhsController.insert); //insert mahasiswa
+router.patch("/update/:id", mhsController.update); //mengupdate mahasiswa
+router.get("/show/:id", mhsController.show); //show detail mahasiswa by id
+router.delete("/delete/:id", mhsController.destroy); //delete mahasiswa by id
