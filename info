@@ -1,0 +1,6 @@
+node -v
+npm install
+ng new my-app
+ng serve --open
+ng generate component Home
+ng generate component HousingLocation --standalone --inline-template
