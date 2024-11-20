@@ -4,3 +4,7 @@ ng new my-app
 ng serve --open
 ng generate component Home
 ng generate component HousingLocation --standalone --inline-template
+ng generate interface HousingLocation
+ng g s housing
+g = generate
+s = service
