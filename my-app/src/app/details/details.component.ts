@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HousingLocation } from '../housing-location';
 import { HousingService } from '../housing.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-details',
@@ -24,6 +25,12 @@ import { HousingService } from '../housing.service';
           <li>Does this location have laundry: {{housingLocation?.laundry}}</li>
         </ul>
       </section>
+      <section class = "listing-apply">
+      <h2 class="section-heading>Aplly now to live hewe</h2>
+      <form [formGroup]="applyForm" (submit) >
+        <label for="first-name">First Name</label>
+        <input id="first-name" type="text" formControlName='firstName'>
+        </section>
     </article>
   `,
   styleUrl: './details.component.css'
@@ -33,10 +40,17 @@ export class DetailsComponent {
   housingLocationId = 0;
   housingService: HousingService = inject(HousingService);
   housingLocation: HousingLocation | undefined;
+  applyForm = new FormGroup({
+    firstName : new FormControl('')
+
+  })
 
   constructor() {
     this.housingLocationId = Number(this.route.snapshot.params['id'])
     this.housingLocation = this.housingService.getHousingLocationById(this.housingLocationId)
     console.log(this.housingLocation)
+  }
+  submitApplication(){
+    console.log(this.applyForm.value.firstName)
   }
 }
