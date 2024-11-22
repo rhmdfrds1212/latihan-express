@@ -1,9 +1,21 @@
-const mongoose = require("mongoose");
-const Mahasiwa = mongoose.model("Mahasiswa");
+const Mahasiswa = require("../models/mahasiswa");
+
+//list data mahasiswa
+// const index = async(req,res) =>{
+//     try {
+//         const mahasiswas = await Mahasiswa.find({});
+//         res.status(200).json(mahasiswas);
+//         if(!mahasiswas){
+//             res.status(400).json ({message : "Collection is Empty"})
+//         }
+//     }catch (error){
+//         res.status(500).json({message : "Error retrieving users", error});
+//     }
+// }
 
 //untuk menghandle request get all mahasiswa
 const index = (req, res, next) => {
-    Mahasiswa.find({}, { __v: 0 })
+    Mahasiswa.find({ "aktif" : true }, { __v: 0 })
       .then((mhs) => {
         const responseMessage = {
             code: 200,
@@ -34,7 +46,7 @@ const insert = (req, res, next) => {
     });
   
     mhs
-      .save()
+      .save() //insert/mennyimpan data ke model (tabel)
       .then((result) => {
             const responseMessage = {
                 code: 200,
@@ -47,8 +59,8 @@ const insert = (req, res, next) => {
         .catch((e) => {
             const responseMessage = {
                 code: 400,
-                success: true,
-                message: "Bad request"
+                success: false,
+                message: "Bad request " + e.message
             };
             res.status(400).json(responseMessage);
         });
@@ -96,7 +108,7 @@ const show = (req, res, next) => {
                 code: 200,
                 success: true,
                 message: "Successfull",
-                data: todo
+                data: mhs
             };
             res.status(200).json(responseMessage);
         })
@@ -110,7 +122,6 @@ const show = (req, res, next) => {
         });
 };
 
-
 //untuk menghandle request delete
 const destroy = (req, res, next) => {
     Mahasiswa
@@ -122,8 +133,7 @@ const destroy = (req, res, next) => {
                 message: "Successfull",
             };
             res.status(200).json(responseMessage);
-        });
-        /*.catch((e) => {
+        }).catch((e) => {
             const responseMessage = {
                 code: 404,
                 success: false,
@@ -131,16 +141,9 @@ const destroy = (req, res, next) => {
                 error: e
             };
             res.status(404).json(responseMessage);
-        });*/
+        });
 };
 
-module.exports = {
-    index, insert, update, show, destroy
-}
 
-const mhsController = require('../controllers/mahasiswa');
-router.get("/", mhsController.index); //list mahasiswa
-router.post("/insert", mhsController.insert); //insert mahasiswa
-router.patch("/update/:id", mhsController.update); //mengupdate mahasiswa
-router.get("/show/:id", mhsController.show); //show detail mahasiswa by id
-router.delete("/delete/:id", mhsController.destroy); //delete mahasiswa by id
+
+module.exports = { index, insert, update, show, destroy }

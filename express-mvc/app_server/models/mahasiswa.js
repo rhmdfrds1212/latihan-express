@@ -1,29 +1,26 @@
-nama : String
-npm : String / required;
-email : String / required;
-tanggal_lahir : Date;
-aktif : Boolean;
+const mongoose = require("mongoose");
 
-const schema = new mongoose.Schema({ name: String, size: String });
-const Tank = mongoose.model('Tank', schema);
+const mahasiswaSchema = new mongoose.Schema({
+    nama :{
+        type: String,
+    },
+    npm : {
+        type: String,
+        require: true,
+    },
+    email : {
+        type : String,
+        require : true,
+        unique : true,
+    },
+    tanggal_lahir: {
+        type : Date,
 
-let mongoose = require("mongoose");
-
-let schemaMhs = new mongoose.Schema({
-  nama: String,
-  npm: {
-    type: String,
-    require: true,
-  },
-  email: {
-    type: String,
-    require: true,
-  },
-  tanggal_lahir: {
-    type: Date,
-  },
-  aktif: Boolean,
+    },
+    aktif:{
+        type : Boolean,
+    }
 });
 
-//create Model from Schema
-mongoose.model("Mahasiswa", schemaMhs);
+const Mahasiswa = mongoose.model('Mahasiswa', mahasiswaSchema);
+module.exports= Mahasiswa;
