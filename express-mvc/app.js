@@ -18,7 +18,6 @@ var housingRouter = require('./app_server/routes/housing');
 app.set('views', path.join(__dirname,'app_server', 'views'));
 app.set('view engine', 'ejs');
 // Daftarkan route mahasiswa
-app.use('/mahasiswa', mahasiswaRouter);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -26,10 +25,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/housing', housingRouter);
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/mahasiswa', mahasiswaRouter);
+app.use('/housing', housingRouter);
+
+// app.use("/housing", (req, res, next) => {
+//   res.setHeader("Access Control-Allow-Origin", "*");
+//   next();
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
