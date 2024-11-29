@@ -8,3 +8,6 @@ ng generate interface HousingLocation
 ng g s housing
 g = generate
 s = service
+
+//.env
+JWT_SECRET=kuncirahasia
