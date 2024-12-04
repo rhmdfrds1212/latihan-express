@@ -1,5 +1,5 @@
 node -v
-npm install
+npm install -g @angular/cli
 ng new my-app
 ng serve --open
 ng generate component Home
